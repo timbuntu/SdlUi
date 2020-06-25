@@ -1,5 +1,7 @@
 # SdlUi
 
+![CI](https://github.com/timbuntu/SdlUi/workflows/CI/badge.svg)
+
 Basic UI Library for SDL
 
 ## Build

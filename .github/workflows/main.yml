@@ -40,16 +40,10 @@ jobs:
       if: steps.cache-sdl2.outputs.cache-hit != 'true'
       run: |
         sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
-        mkdir -p ~/sdl2/usr/bin
-        mkdir -p ~/sdl2/usr/include
-        mkdir -p ~/sdl2/usr/lib/x86_64-linux-gnu/cmake
-        mkdir -p ~/sdl2/usr/lib/x86_64-linux-gnu/pkgconfig
-        cp /usr/bin/sdl2-config ~/sdl2/usr/bin/
-        cp -r /usr/include/SDL2 ~/sdl2/usr/include/
-        cp -r /usr/include/x86_64-linux-gnu/SDL2 ~/sdl2/usr/lib/x86_64-linux-gnu/
-        cp -r /usr/lib/x86_64-linux-gnu/libSDL2* ~/sdl2/usr/lib/x86_64-linux-gnu/
-        cp -r /usr/lib/x86_64-linux-gnu/cmake/SDL2 ~/sdl2/usr/lib/x86_64-linux-gnu/cmake/
-        cp -r /usr/lib/x86_64-linux-gnu/pkgconfig/sdl2.pc ~/sdl2/usr/lib/x86_64-linux-gnu/pkgconfig/
+        mkdir ~/sdl2
+        sudo dpkg -L libsdl2-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
+        sudo dpkg -L libsdl2-image-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
+        sudo dpkg -L libsdl2-ttf-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
 
     # Runs a set of commands using the runners shell
     - name: build

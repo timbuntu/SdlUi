@@ -10,4 +10,5 @@ Requires SDL2, SDL2_image, and SDL2_ttf.
 mkdir build
 cd build
 cmake ..
+make
 ```

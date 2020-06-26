@@ -9,13 +9,14 @@ int main(int argc, const char** argv) {
     }
 
     SdlUi::Window window("Test Window");
+    window.setBorder(10);
 
     if(window.isValid())
         printf("Successfully created window of size %ix%i!\n", window.getDim().x, window.getDim().y);
     else
         printf("Failed to create window!\n");
-
-    SDL_Delay(2000);
+    
+    SdlUi::Loop(&window);
     SdlUi::Quit();
     return 0;
 }

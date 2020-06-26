@@ -20,10 +20,14 @@ namespace SdlUi {
             virtual bool isValid() const { return window && surface; }
             virtual ~Window();
 
+        protected:
+            virtual SDL_Renderer* getRenderer() const { return renderer; }
+
         private:
-            const char* title;
-            SDL_Window* window;
-            SDL_Surface* surface;
+            const char*   title;
+            SDL_Window*   window;
+            SDL_Surface*  surface;
+            SDL_Renderer* renderer;
     };
 }
 

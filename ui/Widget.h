@@ -25,6 +25,8 @@ namespace SdlUi {
 
             virtual void draw() const;
 
+            virtual ~Widget() = 0;
+
         private:
             static unsigned long idCounter;
             const unsigned long id;

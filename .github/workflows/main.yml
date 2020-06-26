@@ -21,30 +21,10 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    
-    - name: Cache
-      id: cache-sdl2
-      uses: actions/cache@v2.0.0
-      with:
-        # A list of files, directories, and wildcard patterns to cache and restore
-        path: ~/sdl2
-        # An explicit key for restoring and saving the cache
-        key: ${{ runner.os }}-sdl2-with-libpulse
-    
-    - name: Restore SDL2
-      if: steps.cache-sdl2.outputs.cache-hit == 'true'
-      run: sudo cp -r ~/sdl2/* /
-    
+
     # Runs a single command using the runners shell
     - name: Install SDL2
-      if: steps.cache-sdl2.outputs.cache-hit != 'true'
-      run: |
-        sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
-        mkdir ~/sdl2
-        sudo dpkg -L libsdl2-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
-        sudo dpkg -L libsdl2-image-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
-        sudo dpkg -L libsdl2-ttf-dev | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
-        sudo dpkg -L libpulse0 | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/sdl2/
+      run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
 
     # Runs a set of commands using the runners shell

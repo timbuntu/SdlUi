@@ -9,7 +9,7 @@ namespace SdlUi {
 
     class Widget {
         public:
-            Widget(const Widget* parent, const Vector& dimension = Vector(0, 0), const Vector& position = Vector(0, 0), bool absPos = 0);
+            Widget(Widget* parent, const Vector& dimension = Vector(0, 0), const Vector& position = Vector(0, 0), bool absPos = 0);
 
             Vector getPos() const { return pos; }
             Vector getDim() const { return dim; }

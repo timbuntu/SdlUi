@@ -4,8 +4,8 @@ using namespace SdlUi;
 
 unsigned long Widget::idCounter = 0;
 
-Widget::Widget(const Widget* parent, const Vector& dimension, const Vector& position, bool absPos)
-: dim(dimension), pos(position), absPos(absPos), id(idCounter++)
+Widget::Widget(Widget* parent, const Vector& dimension, const Vector& position, bool absPos)
+: parent(parent), dim(dimension), pos(position), absPos(absPos), id(idCounter++)
 {
 }
 

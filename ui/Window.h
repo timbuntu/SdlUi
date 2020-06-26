@@ -17,7 +17,7 @@ namespace SdlUi {
                 const Vector& pos = Vector(0,0)
             );
 
-            virtual bool isValid() const { return window && surface; }
+            virtual bool isValid() const { return window && renderer; }
             virtual ~Window();
 
         protected:
@@ -26,7 +26,6 @@ namespace SdlUi {
         private:
             const char*   title;
             SDL_Window*   window;
-            SDL_Surface*  surface;
             SDL_Renderer* renderer;
     };
 }

@@ -9,13 +9,13 @@ Window::Window(const char* title, const Vector& dim, const Vector& pos)
     this->title = strdup(title);
     this->window = SDL_CreateWindow(title, pos.x, pos.y, dim.x, dim.y, SDL_WINDOW_SHOWN);
     if(window) {
-        this->surface =  SDL_GetWindowSurface(window);
-        this->renderer = SDL_GetRenderer(window);
-        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
-        SDL_UpdateWindowSurface(window);
+        this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        if(renderer == NULL)
+            printf("SdlUi::Window: Couldn't create renderer. SDL_Error: %s\n", SDL_GetError());
+
     } else {
         printf("SdlUi::Window: Couldn't create window. SDL_Error: %s\n", SDL_GetError());
-        this->surface = NULL;
+        this->renderer = NULL;
     }
 
 }

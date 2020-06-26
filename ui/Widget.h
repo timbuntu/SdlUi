@@ -24,10 +24,10 @@ namespace SdlUi {
             void delChild(const Widget* widget);
             bool hasChild(const Widget* widget) const;
 
-            bool isValid() const { return valid; }
+            virtual bool isValid() const { return valid; }
             virtual void draw() const;
 
-            virtual ~Widget() = 0;
+            virtual ~Widget();
 
         private:
             static unsigned long idCounter;

@@ -25,3 +25,10 @@ void Widget::draw() const {
     for(auto iter : children)
         iter.second->draw();
 }
+
+Widget::~Widget() {
+    for(auto iter : children)
+        delete[] iter.second;
+
+    children.clear(); 
+}

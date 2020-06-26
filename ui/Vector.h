@@ -1,5 +1,5 @@
-#ifndef UI_VECTOR
-#define UI_VECTOR
+#ifndef SDLUI_VECTOR
+#define SDLUI_VECTOR
 
 namespace SdlUi {
 

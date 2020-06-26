@@ -1,11 +1,11 @@
-#ifndef UI_WINDOW
-#define UI_WINDOW
+#ifndef SDLUI_WINDOW
+#define SDLUI_WINDOW
 
 #include "Widget.h"
 #include <cstring>
 
-#define UI_WIN_DEFAULT_WIDTH  640
-#define UI_WIN_DEFAULT_HEIGHT 480
+#define SDLUI_WIN_DEFAULT_WIDTH  640
+#define SDLUI_WIN_DEFAULT_HEIGHT 480
 
 namespace SdlUi {
     
@@ -13,7 +13,7 @@ namespace SdlUi {
         public:
             Window(
                 const char* title,
-                const Vector& dim = Vector(UI_WIN_DEFAULT_WIDTH, UI_WIN_DEFAULT_HEIGHT),
+                const Vector& dim = Vector(SDLUI_WIN_DEFAULT_WIDTH, SDLUI_WIN_DEFAULT_HEIGHT),
                 const Vector& pos = Vector(0,0)
             );
 

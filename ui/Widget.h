@@ -15,7 +15,7 @@ namespace SdlUi {
             Vector getDim() const { return dim; }
 
             void setPos(const Vector& pos) { this->pos = pos; }
-            void setDim(const Vector& dim) { this->dim = dim; }
+            void resize(const Vector& dim) { this->dim = dim; }
 
             void setAbsolute(bool absPos) { this->absPos = absPos; }
             bool isAbsolute() const { return absPos; }

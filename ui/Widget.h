@@ -9,7 +9,9 @@ namespace SdlUi {
 
     class Widget {
         public:
-            Widget(Widget* parent, const Vector& dimension = Vector(0, 0), const Vector& position = Vector(0, 0), bool absPos = 0);
+            Widget(Widget* parent, bool freeChildren = false);
+            Widget(Widget* parent, const Vector& pos = Vector(0, 0), unsigned short borderWidth = 0, bool freeChildren = false);
+            Widget(Widget* parent, const Vector& pos, const Vector& dimension, unsigned short borderWidth = 0, bool freeChildren = false);
 
             Vector getPos() const { return pos; }
             Vector getDim() const { return dim; }
@@ -25,8 +27,9 @@ namespace SdlUi {
             bool hasBorder() const { return borderWidth > 0; }
 
             void addChild(Widget* widget);
-            void delChild(const Widget* widget);
+            void delChild(Widget* widget) { delChild(widget, freeChildren); }
             bool hasChild(const Widget* widget) const;
+            Widget* getParent() { return parent; }
 
             virtual bool isValid() const { return valid; }
             virtual void draw() const;
@@ -34,6 +37,8 @@ namespace SdlUi {
             virtual ~Widget();
         protected:
             virtual SDL_Renderer* getRenderer() const { return parent->getRenderer(); }
+
+            void delChild(Widget* widget, bool free);
 
             virtual void drawBorder() const;
 
@@ -45,6 +50,7 @@ namespace SdlUi {
             unsigned short borderWidth;
             bool absPos;
             bool valid;
+            bool freeChildren;
             std::map<unsigned long, Widget*> children;
     };
 

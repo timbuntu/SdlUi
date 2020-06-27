@@ -3,8 +3,8 @@
 using namespace SdlUi;
 
 
-Window::Window(const char* title, const Vector& dim, const Vector& pos)
-: Widget(NULL, dim, pos) 
+Window::Window(const char* title, const Vector& dim, const Vector& pos, bool freeChildren)
+: Widget(NULL, pos, dim, 0, freeChildren) 
 { 
     this->title = strdup(title);
     this->window = SDL_CreateWindow(title, pos.x, pos.y, dim.x, dim.y, SDL_WINDOW_SHOWN);

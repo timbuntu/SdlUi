@@ -14,7 +14,8 @@ namespace SdlUi {
             Window(
                 const char* title,
                 const Vector& dim = Vector(SDLUI_WIN_DEFAULT_WIDTH, SDLUI_WIN_DEFAULT_HEIGHT),
-                const Vector& pos = Vector(0,0)
+                const Vector& pos = Vector(0,0),
+                bool freeChildren = false
             );
 
             virtual bool isValid() const { return window && renderer; }

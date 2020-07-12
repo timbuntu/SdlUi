@@ -6,6 +6,15 @@
 #include <map>
 
 namespace SdlUi {
+    const float CENTER = INFINITY;
+    const float FILL   = INFINITY;
+
+    const Vector POS_CENTER = Vector(CENTER, CENTER);
+    const Vector POS_CENTER_H = Vector(CENTER, 0);
+    const Vector POS_CENTER_V = Vector(0, CENTER);
+    const Vector DIM_FILL   = Vector(FILL, FILL);
+
+    SDL_Rect createRect(const Vector& pos, const Vector& dim);
 
     class Widget {
         public:
@@ -16,10 +25,10 @@ namespace SdlUi {
             Vector getPos() const { return pos; }
             Vector getDim() const { return dim; }
 
-            void setPos(const Vector& dim) { this->dim = dim; }
-            void resize(const Vector& pos);
-            void setPos(const int x, const int y) { pos.x = x; pos.y = y; }
-            void resize(const int x, const int y) { this->resize(Vector(x, y)); }
+            void setPos(const Vector& pos) { this->setPos(pos.x, pos.y); }
+            void setPos(const float x, const float y);
+            void resize(const Vector& dim);
+            void resize(const float x, const float y) { this->resize(Vector(x,y)); }
             void scale(const float factorX, const float factorY);
 
             void setAbsolute(bool absPos) { this->absPos = absPos; }
@@ -45,6 +54,7 @@ namespace SdlUi {
             void delChild(Widget* widget, bool free);
 
             virtual void drawBorder() const;
+
 
         private:
             static unsigned long idCounter;

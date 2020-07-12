@@ -24,7 +24,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Install SDL2
-      run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+      run: sudo apt update && sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
 
     # Runs a set of commands using the runners shell

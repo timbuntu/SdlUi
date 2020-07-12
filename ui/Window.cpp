@@ -7,7 +7,7 @@ Window::Window(const char* title, const Vector& dim, const Vector& pos, bool fre
 : Widget(NULL, pos, dim, 0, freeChildren) 
 { 
     this->title = strdup(title);
-    this->window = SDL_CreateWindow(title, pos.x, pos.y, dim.x, dim.y, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow(title, pos.x, pos.y, dim.x, dim.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if(window) {
         this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if(renderer == NULL)

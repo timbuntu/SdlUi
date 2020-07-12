@@ -11,7 +11,7 @@ Widget::Widget(Widget* parent, bool freeChildren)
 }
 
 Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bool freeChildren)
-: parent(parent), pos(pos), borderWidth(borderWidth), id(idCounter++), freeChildren(freeChildren)
+: parent(parent), pos(pos), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
 {
     if(parent)
         this->dim = parent->dim;
@@ -20,12 +20,34 @@ Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bo
 }
 
 Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, unsigned short borderWidth, bool freeChildren)
-: parent(parent), dim(dimension), pos(position), borderWidth(borderWidth), id(idCounter++), freeChildren(freeChildren)
+: parent(parent), dim(dimension), pos(position), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
 {
     if(parent)
         parent->addChild(this);
 }
 
+void Widget::scale(const float factorX, const float factorY) {
+    printf("Widget %li: Scaling by factors %f, %f\n", this->id, factorX, factorY);
+    for(auto child : children)
+        child.second->scale(factorX, factorY);
+
+    if(factorX != 1 && factorX != INFINITY) {
+        printf("Widget %li: Scaling x\n", this->id);
+        this->dim.x = this->dim.x * factorX;
+        this->pos.x = this->pos.x * factorX;
+    }
+    if(factorY != 1 && factorY != INFINITY) {
+        printf("Widget %li: Scaling y\n", this->id);
+        this->dim.y = this->dim.y * factorY;
+        this->pos.y = this->pos.y * factorY;
+    }
+}
+
+/**
+ * Adds the given Widget as child.
+ * Sets the parent property of the child, and reduces size to parent size if neccessary.
+ * @param widget The Widget to add
+ */
 void Widget::addChild(Widget* widget) {
     if(hasChild(widget))
         return;
@@ -37,8 +59,24 @@ void Widget::addChild(Widget* widget) {
 
         widget->parent = this;
     }
+    widget->fit(this);
+
     children.insert(std::pair<unsigned long, Widget*>(widget->id, widget));
+    //TODO More elaborate calculation of minimalDim for multiple children
+    if(widget->minimalDim < this->minimalDim)
+        this->minimalDim = widget->minimalDim;
+
     printf("Widget %li: Added widget %li\n", id, widget->id);
+}
+
+void Widget::resize(const Vector& dim) {
+    if(parent)
+        if((this->pos + dim) > parent->dim)
+            return;
+
+    const float scaleX = ((float)dim.x) / this->dim.x;
+    const float scaleY = ((float)dim.y) / this->dim.y;
+    this->scale(scaleX, scaleY);
 }
 
 void Widget::delChild(Widget* widget, bool free) {
@@ -76,7 +114,7 @@ void Widget::draw() const {
 void Widget::drawBorder() const {
     if(borderWidth > 0) {
         SDL_Renderer* renderer = getRenderer();
-        SDL_Rect rect = {pos.x, pos.y, dim.x, dim.y};
+        SDL_Rect rect = {(int)round(pos.x), (int)round(pos.y), (int)round(dim.x), (int)round(dim.y)};
         //printf("Widget %li: Drawing border from %i,%i to %i,%i\n", id, rect.x, rect.y, rect.x+rect.w, rect.y+rect.h);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF );
         SDL_RenderDrawRect(renderer, &rect);
@@ -87,6 +125,20 @@ void Widget::drawBorder() const {
         //printf("Widget %li: And from %i,%i to %i,%i\n", id, rect.x, rect.y, rect.x+rect.w, rect.y+rect.h);
         SDL_RenderDrawRect(renderer, &rect);
     }
+}
+
+void Widget::fit(const Widget* other) {
+    
+    printf("Widget %li: Fitting to parent...\n", id);
+    Vector spaceReq(this->pos + this->dim);
+    if(spaceReq.x > other->dim.x || spaceReq.y > other->dim.y) {
+        this->resize(
+                (this->pos.x + this->dim.x) <= other->dim.x ? this->dim.x : (other->dim.x - this->pos.x),
+                (this->pos.y + this->dim.y) <= other->dim.y ? this->dim.y : (other->dim.y - this->pos.y)
+        );
+    } else
+        printf("Widget %li: Don't need to resize\n", id);
+
 }
 
 Widget::~Widget() {

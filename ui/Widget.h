@@ -16,8 +16,11 @@ namespace SdlUi {
             Vector getPos() const { return pos; }
             Vector getDim() const { return dim; }
 
-            void setPos(const Vector& pos) { this->pos = pos; }
-            void resize(const Vector& dim) { this->dim = dim; }
+            void setPos(const Vector& dim) { this->dim = dim; }
+            void resize(const Vector& pos);
+            void setPos(const int x, const int y) { pos.x = x; pos.y = y; }
+            void resize(const int x, const int y) { this->resize(Vector(x, y)); }
+            void scale(const float factorX, const float factorY);
 
             void setAbsolute(bool absPos) { this->absPos = absPos; }
             bool isAbsolute() const { return absPos; }
@@ -37,7 +40,8 @@ namespace SdlUi {
             virtual ~Widget();
         protected:
             virtual SDL_Renderer* getRenderer() const { return parent->getRenderer(); }
-
+            
+            void fit(const Widget* other);
             void delChild(Widget* widget, bool free);
 
             virtual void drawBorder() const;
@@ -46,7 +50,7 @@ namespace SdlUi {
             static unsigned long idCounter;
             const unsigned long id;
             Widget* parent;
-            Vector pos, dim;
+            Vector pos, dim, minimalDim;
             unsigned short borderWidth;
             bool absPos;
             bool valid;

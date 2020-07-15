@@ -15,6 +15,18 @@ file(GLOB_RECURSE SOURCES
 
 add_library(SdlUi SHARED ${SOURCES})
 target_link_libraries(SdlUi SDL2 SDL2_image SDL2_ttf)
-add_executable(test tests/main.cpp)
-target_include_directories(test PRIVATE ui)
-target_link_libraries(test SdlUi)
+add_executable(debug tests/debug.cpp)
+target_include_directories(debug PRIVATE ui)
+target_link_libraries(debug SdlUi)
+
+enable_testing()
+set(CMAKE_CTEST_ARGUMENTS ${CMAKE_CTEST_ARGUMENTS} --output-on-failure)
+file(GLOB testFiles "tests/test_*.cpp")
+foreach(testFile ${testFiles})
+    string(REGEX REPLACE "(^.*/|\\.[^.]*$)" "" output ${testFile})
+    add_executable(${output} ${testFile})
+    target_include_directories(${output} PRIVATE ui)
+    target_link_libraries(${output} SdlUi)
+    add_test(NAME ${output} COMMAND ${output})
+endforeach()
+

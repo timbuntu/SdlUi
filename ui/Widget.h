@@ -19,7 +19,7 @@ namespace SdlUi {
     class Widget {
         public:
             Widget(Widget* parent, bool freeChildren = false);
-            Widget(Widget* parent, const Vector& pos = Vector(0, 0), unsigned short borderWidth = 0, bool freeChildren = false);
+            Widget(Widget* parent, const Vector& pos, unsigned short borderWidth = 0, bool freeChildren = false);
             Widget(Widget* parent, const Vector& pos, const Vector& dimension, unsigned short borderWidth = 0, bool freeChildren = false);
 
             Vector getPos() const { return pos; }
@@ -44,6 +44,7 @@ namespace SdlUi {
             Widget* getParent() { return parent; }
 
             virtual bool isValid() const { return valid; }
+            bool freesChildren() const { return freeChildren; }
             virtual void draw() const;
 
             virtual ~Widget();
@@ -63,7 +64,7 @@ namespace SdlUi {
             Vector pos, dim, minimalDim;
             unsigned short borderWidth;
             bool absPos;
-            bool valid;
+            bool valid = true;
             bool freeChildren;
             std::map<unsigned long, Widget*> children;
     };

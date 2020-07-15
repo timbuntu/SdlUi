@@ -29,4 +29,8 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: build
-      run: mkdir build && cd build && cmake .. && make && make test
+      run: mkdir build && cd build && cmake .. && make
+    
+    - name: test
+      if: success()
+      run: cd build && make test

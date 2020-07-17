@@ -4,7 +4,7 @@ using namespace SdlUi;
 
 int main(int argc, const char** argv) {
     
-    TEST_ADD("Constructor1", {
+    TEST_ADD("Constructor1", [](void) {
         Widget widget(nullptr);
         
         assert(widget.getDim()         == Vector(0,0));
@@ -15,7 +15,7 @@ int main(int argc, const char** argv) {
         assert(widget.getBorderWidth() == 0          );
     });
 
-    TEST_ADD("Constructor2", {
+    TEST_ADD("Constructor2", [](void) {
         Widget widgetDefault(nullptr, Vector(0, 200));
         
         assert(widgetDefault.getPos()         == Vector(0,200));
@@ -35,7 +35,7 @@ int main(int argc, const char** argv) {
         assert(widgetCustom.getBorderWidth() == 4            );
     });
 
-    TEST_ADD("Constructor3", {
+    TEST_ADD("Constructor3", [](void) {
         Widget widgetDefault(nullptr, Vector(200, 200), Vector(400, 400));
         
         assert(widgetDefault.getPos()         == Vector(200,200));

@@ -54,6 +54,11 @@ float Vector::operator*(const Vector& other) const {
     return x*other.x + y*other.y;
 }
 
-float SdlUi::abs(const Vector& v) {
+/**
+ * Returns the absolute, or the length, of the given Vector.
+ *
+ * @param v The Vector to get the absolute of
+ */
+float Vector::abs(const Vector& v) {
     return sqrt(((float)v.x)*v.x + ((float)v.y)*v.y);
 }

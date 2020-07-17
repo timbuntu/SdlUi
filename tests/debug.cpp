@@ -3,10 +3,6 @@
 
 
 int main(int argc, const char** argv) {
-    SdlUi::Vector vecs[4] = { SdlUi::Vector(0,0), SdlUi::Vector(1,0), SdlUi::Vector(0,2), SdlUi::Vector(2,2) };
-    for(SdlUi::Vector vec : vecs)
-        printf("|(%f, %f)| = %f\n", vec.x, vec.y, abs(vec));
-
     if(!SdlUi::Init()) {
         printf("Failed initializing SdlUi!\n");
         return 1;

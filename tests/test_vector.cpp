@@ -40,10 +40,10 @@ int main(int argc, const char** argv) {
     });
     
     TEST_ADD("Absolute", [](void) {
-        assert(abs(Vector(0,0)) == 0                    );
-        assert(abs(Vector(1,0)) == 1                    );
-        assert(abs(Vector(0,2)) == 2                    );
-        assert(abs(Vector(2,2)) == sqrt(2*2.0f + 2*2.0f));
+        assert(Vector::abs(Vector(0,0)) == 0                    );
+        assert(Vector::abs(Vector(1,0)) == 1                    );
+        assert(Vector::abs(Vector(0,2)) == 2                    );
+        assert(Vector::abs(Vector(2,2)) == sqrt(2*2.0f + 2*2.0f));
     });
         
     runTests();

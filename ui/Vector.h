@@ -5,6 +5,9 @@
 
 namespace SdlUi {
 
+    /**
+     * Class representing a 2d Vector with floating point precision.
+     */
     class Vector {
         public:
 
@@ -26,10 +29,11 @@ namespace SdlUi {
             Vector  operator* (const float)    const;
             float     operator* (const Vector&) const;
 
+            static float abs(const Vector& v);
+
             float x, y;
     };
 
-    float abs(const Vector& v);
 
 }
 

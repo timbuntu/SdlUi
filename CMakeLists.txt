@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.4)
 
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
+    cmake_policy(SET CMP0012 NEW)
+    cmake_policy(SET CMP0054 NEW)
 endif(COMMAND cmake_policy)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -12,6 +14,11 @@ file(GLOB_RECURSE SOURCES
      ui/*.h
      ui/*.cpp
 )
+
+include(FindDoxygen)
+if(DOXYGEN_FOUND)
+    doxygen_add_docs(doc ui)
+endif()
 
 add_library(SdlUi SHARED ${SOURCES})
 target_link_libraries(SdlUi SDL2 SDL2_image SDL2_ttf)

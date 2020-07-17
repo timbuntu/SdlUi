@@ -14,7 +14,9 @@ namespace SdlUi {
 
             bool    operator==(const Vector&) const;
             bool    operator>(const Vector&) const;
+            bool    operator>=(const Vector&) const;
             bool    operator<(const Vector&) const;
+            bool    operator<=(const Vector&) const;
 
             Vector& operator+=(const Vector&);
             Vector  operator+ (const Vector&) const;

@@ -18,7 +18,11 @@ int main(int argc, const char** argv) {
     TEST_ADD("Comparison", [](void) {
         assert(Vector(1,3) == Vector(1,3));
         assert(Vector(1,1) <  Vector(1,3));
+        assert(Vector(1,1) <=  Vector(1,3));
+        assert(Vector(1,1) <=  Vector(1,1));
         assert(Vector(1,3) >  Vector(2,1));
+        assert(Vector(1,3) >=  Vector(2,1));
+        assert(Vector(1,3) >=  Vector(1,3));
     });
 
     TEST_ADD("Arithmetics", [](void) {

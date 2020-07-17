@@ -10,8 +10,16 @@ bool Vector::operator<(const Vector& other) const {
     return abs(*this) < abs(other);
 }
 
+bool Vector::operator<=(const Vector& other) const {
+    return abs(*this) <= abs(other);
+}
+
 bool Vector::operator>(const Vector& other) const {
     return abs(*this) > abs(other);
+}
+
+bool Vector::operator>=(const Vector& other) const {
+    return abs(*this) >= abs(other);
 }
 
 Vector& Vector::operator+=(const Vector& other){

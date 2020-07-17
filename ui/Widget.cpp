@@ -4,12 +4,28 @@ using namespace SdlUi;
 
 unsigned long Widget::idCounter = 0;
 
+/**
+ * Create Widget with given parent, or none if passed a null pointer.
+ * Optionally can be passed a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
+ *
+ * @param parent Parent of the new Widget, null pointer if there is none
+ * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
+ */
 Widget::Widget(Widget* parent, bool freeChildren)
 : Widget(parent, Vector(0, 0), 0, freeChildren)
 {
 
 }
 
+/**
+ * Create Widget at the given position with given parent, or none if passed a null pointer.
+ * Optionally can be passed a borderwidth, and a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
+ *
+ * @param parent Parent of the new Widget, null pointer if there is none
+ * @param pos The position of the Widget
+ * @param borderWidth The width of the border to draw around the widget
+ * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
+ */
 Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bool freeChildren)
 : parent(parent), pos(pos), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
 {
@@ -19,6 +35,17 @@ Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bo
         dim = Vector(0, 0);
 }
 
+/**
+ * Create Widget at the given position with the given dimension, and the given parent, or none if passed a null pointer.
+ * If the dimension is too big to fit into the parent, it is shrinked to the maximal fitting size.
+ * Optionally can be passed a borderwidth, and a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
+ *
+ * @param parent Parent of the new Widget, null pointer if there is none
+ * @param position The position of the Widget
+ * @param dimension The dimension of the Widget
+ * @param borderWidth The width of the border to draw around the widget
+ * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
+ */
 Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, unsigned short borderWidth, bool freeChildren)
 : parent(parent), dim(dimension), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
 {
@@ -35,6 +62,12 @@ Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, 
         this->setPos(position.x, 0);
 }
 
+/**
+ * Scales the Widget, including all its children, by factorX and factorY
+ *
+ * @param factorX The factor with whitch to scale on x axis
+ * @param factorY The factor with whitch to scale on y axis
+ */
 void Widget::scale(const float factorX, const float factorY) {
     printf("Widget %li: Scaling by factors %f, %f\n", this->id, factorX, factorY);
     for(auto child : children)
@@ -56,6 +89,7 @@ void Widget::scale(const float factorX, const float factorY) {
 /**
  * Adds the given Widget as child.
  * Sets the parent property of the child, and reduces size to parent size if neccessary.
+ *
  * @param widget The Widget to add
  */
 void Widget::addChild(Widget* widget) {
@@ -79,11 +113,22 @@ void Widget::addChild(Widget* widget) {
     printf("Widget %li: Added widget %li\n", id, widget->id);
 }
 
+/**
+ * Sets the position of the Widget.
+ *
+ * @param x The x coordinate
+ * @param y the y coordinate
+ */
 void Widget::setPos(const float x, const float y) {
     this->pos.x = x == CENTER ? (parent->dim.x/2 - this->dim.x/2) : x;
     this->pos.y = y == CENTER ? (parent->dim.y/2 - this->dim.y/2) : y;
 }
 
+/**
+ * Resizes the widget to the given size, scaling all its content.
+ *
+ * @param dim The dimension to resize to.
+ */
 void Widget::resize(const Vector& dim) {
     if(parent) {
         if((this->pos + dim) > parent->dim) {
@@ -107,6 +152,11 @@ void Widget::delChild(Widget* widget, bool free) {
     children.erase(id);
 }
 
+/**
+ * Checks whether the given Widget is a child if this Widget.
+ *
+ * @param widget
+ */
 bool Widget::hasChild(const Widget* widget) const {
     return children.find(widget->id) != children.end();
 }

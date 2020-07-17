@@ -1,5 +1,27 @@
 #include "SdlUi.h"
 
+/*! \mainpage Index
+ *
+ * \section intro_sec Introduction
+ *
+ * This is the introduction.
+ *
+ * \section install_sec Installation
+ *
+ * \subsection install_req Requirements
+ *
+ * SdlUi needs SDL2, SDL2_image, and SDL2_ttf.
+ *  
+ * \subsection install_build Building
+ * 
+ * ```bash
+ * mkdir build
+ * cd build
+ * cmake ..
+ * make
+ * ```
+ */
+
 using namespace SdlUi;
 
 bool SdlUi::Init() {

@@ -6,9 +6,18 @@
 #include <map>
 
 namespace SdlUi {
+    /**
+     * Used for centering on individual axis
+     */
     const float CENTER = INFINITY;
+    /**
+     * Used for filling individual dimension
+     */
     const float FILL   = INFINITY;
 
+    /**
+     * Used for centering in parent
+     */
     const Vector POS_CENTER = Vector(CENTER, CENTER);
     const Vector POS_CENTER_H = Vector(CENTER, 0);
     const Vector POS_CENTER_V = Vector(0, CENTER);
@@ -16,6 +25,10 @@ namespace SdlUi {
 
     SDL_Rect createRect(const Vector& pos, const Vector& dim);
 
+    /**
+     * The base Widget class contains common functions for all Widgets,
+     * and can by itself be used as pane or container for adding other Widgets.
+     */
     class Widget {
         public:
             Widget(Widget* parent, bool freeChildren = false);

@@ -3,11 +3,13 @@
 using namespace SdlUi;
 
 void addConstructorTests(void);
-void addChildTests(void);
+void addChildTests      (void);
+void addResizeTests     (void);
 
 int main(int argc, const char** argv) {
     addConstructorTests();   
     addChildTests();
+    addResizeTests();
     runTests();
 }
 
@@ -74,6 +76,7 @@ static void testParentChild(Widget* parent, Widget* child) {
     assert(parent->hasChild(child) == false);
     assert(child->getParent() == nullptr);
 }
+
 void addChildTests(void) {
     TEST_ADD("Childs via parent pointer", [](void) {
         Widget parent(nullptr, Vector(0,0), Vector(640,480));
@@ -90,3 +93,40 @@ void addChildTests(void) {
         testParentChild(&parent, &child);
     });
 }
+
+void addResizeTests(void) {
+    TEST_ADD("Resize", [](void) {
+        Widget parent (nullptr, Vector(0,0), Vector(640,480));
+        const Vector childSize(parent.getDim().x/2, parent.getDim().y/2);
+
+        Widget child1 (&parent,  Vector(0,           0),           childSize);
+        Widget child2 (&parent,  Vector(childSize.x, 0),           childSize);
+        Widget child3 (&parent,  Vector(0,           childSize.y), childSize);
+        Widget child4 (&parent,  Vector(childSize.x, childSize.y), childSize);
+        
+        float factor = 1.5f;
+        parent.resize(childSize*2 * factor);
+        assert(child1.getPos() == Vector(0,                  0                 ));
+        assert(child2.getPos() == Vector(childSize.x*factor, 0                 ));
+        assert(child3.getPos() == Vector(0,                  childSize.y*factor));
+        assert(child4.getPos() == Vector(childSize.x*factor, childSize.y*factor));
+
+        assert(child1.getDim() == childSize*factor);
+        assert(child2.getDim() == childSize*factor);
+        assert(child3.getDim() == childSize*factor);
+        assert(child4.getDim() == childSize*factor);
+
+        parent.resize(childSize*2);
+        assert(child1.getPos() == Vector(0,           0          ));
+        assert(child2.getPos() == Vector(childSize.x, 0          ));
+        assert(child3.getPos() == Vector(0,           childSize.y));
+        assert(child4.getPos() == Vector(childSize.x, childSize.y));
+
+        assert(child1.getDim() == childSize);
+        assert(child2.getDim() == childSize);
+        assert(child3.getDim() == childSize);
+        assert(child4.getDim() == childSize);
+    });
+
+}
+

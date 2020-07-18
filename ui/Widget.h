@@ -35,34 +35,31 @@ namespace SdlUi {
             Widget(Widget* parent, const Vector& pos, unsigned short borderWidth = 0, bool freeChildren = false);
             Widget(Widget* parent, const Vector& pos, const Vector& dimension, unsigned short borderWidth = 0, bool freeChildren = false);
 
-            Vector getPos() const { return pos; }
-            Vector getDim() const { return dim; }
+            Vector getPos() const;
+            Vector getDim() const;
 
-            void setPos(const Vector& pos) { this->setPos(pos.x, pos.y); }
+            void setPos(const Vector& pos);
             void setPos(const float x, const float y);
             void resize(const Vector& dim);
-            void resize(const float x, const float y) { this->resize(Vector(x,y)); }
+            void resize(const float x, const float y);
             void scale(const float factorX, const float factorY);
 
-            void setAbsolute(bool absPos) { this->absPos = absPos; }
-            bool isAbsolute() const { return absPos; }
-
-            void setBorder(const unsigned short width) { this->borderWidth = width; }
-            unsigned short getBorderWidth() const { return borderWidth; }
-            bool hasBorder() const { return borderWidth > 0; }
+            void setBorder(const unsigned short width);
+            unsigned short getBorderWidth() const;
+            bool hasBorder() const;
 
             void addChild(Widget* widget);
-            void delChild(Widget* widget) { delChild(widget, freeChildren); }
+            void delChild(Widget* widget);
             bool hasChild(const Widget* widget) const;
-            Widget* getParent() { return parent; }
+            Widget* getParent();
 
-            virtual bool isValid() const { return valid; }
-            bool freesChildren() const { return freeChildren; }
+            virtual bool isValid() const;
+            bool freesChildren() const;
             virtual void draw() const;
 
             virtual ~Widget();
         protected:
-            virtual SDL_Renderer* getRenderer() const { return parent->getRenderer(); }
+            virtual SDL_Renderer* getRenderer() const;
             
             void fit(const Widget* other);
             void delChild(Widget* widget, bool free);
@@ -76,7 +73,6 @@ namespace SdlUi {
             Widget* parent;
             Vector pos, dim, minimalDim;
             unsigned short borderWidth;
-            bool absPos;
             bool valid = true;
             bool freeChildren;
             std::map<unsigned long, Widget*> children;

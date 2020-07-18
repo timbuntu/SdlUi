@@ -114,7 +114,34 @@ void Widget::addChild(Widget* widget) {
 }
 
 /**
- * Sets the position of the Widget.
+ * Returns the position of this Widget.
+ *
+ * @return The position of this Widget
+ */
+Vector Widget::getPos() const {
+    return this->pos;
+}
+
+/**
+ * Returns the dimension of this Widget.
+ *
+ * @return The dimension of this Widget
+ */
+Vector Widget::getDim() const {
+    return this->dim;
+}
+
+/**
+ * Sets the position of the Widget to the given position.
+ *
+ * @param pos The position the move the Widget to
+ */
+void Widget::setPos(const Vector& pos) {
+    this->setPos(pos.x, pos.y);
+}
+
+/**
+ * Sets the position of the Widget to the given coordinates.
  *
  * @param x The x coordinate
  * @param y the y coordinate
@@ -127,7 +154,17 @@ void Widget::setPos(const float x, const float y) {
 /**
  * Resizes the widget to the given size, scaling all its content.
  *
- * @param dim The dimension to resize to.
+ * @param x The x dimension to set
+ * @param y The y dimension to set
+ */
+ void Widget::resize(const float x, const float y) {
+     this->resize(Vector(x,y));
+ }
+
+/**
+ * Resizes the widget to the given size, scaling all its content.
+ *
+ * @param dim The dimension to resize to
  */
 void Widget::resize(const Vector& dim) {
     if(parent) {
@@ -142,6 +179,21 @@ void Widget::resize(const Vector& dim) {
     this->scale(scaleX, scaleY);
 }
 
+/**
+ * Removes the given Widget as it child if it is one. If the freeChihilds option was set in Constructor, also frees the child.
+ *
+ * @param widget The widget to remove as child
+ */
+void Widget::delChild(Widget* widget) {
+    this->delChild(widget, this->freeChildren);
+}
+
+/**
+ * Removes the given Widget as it child if it is one. If the free parameter is set to true, also frees the child.
+ *
+ * @param widget The widget to remove as child
+ * @param free Whether to free the child after removal
+ */
 void Widget::delChild(Widget* widget, bool free) {
     unsigned long id = widget->id;
     if(free)
@@ -156,11 +208,60 @@ void Widget::delChild(Widget* widget, bool free) {
  * Checks whether the given Widget is a child if this Widget.
  *
  * @param widget
+ * @return Whether the given Widget is a child of this Widget
  */
 bool Widget::hasChild(const Widget* widget) const {
     return children.find(widget->id) != children.end();
 }
 
+/**
+ * Checks whether this Widget was initialized correctly, and is fully functional.
+ *
+ * @return Whether this Widget was initialized correctly
+ */
+bool Widget::isValid() const {
+    return valid;
+}
+
+/**
+ * Check whether this Widget frees its children on removal, or its destruction.
+ *
+ * @return Whether this Widget frees its children.
+ */
+bool Widget::freesChildren() const {
+    return freeChildren;
+}
+
+/**
+ * Set the width of the inner border for this Widget.
+ *
+ * @param width The width to set the borderwidth to
+ */
+void Widget::setBorder(const unsigned short width) {
+    this->borderWidth = width;
+}
+
+/**
+ * Get the width of the inner border for this Widget.
+ *
+ * @return The borderwidth of this Widget
+ */
+unsigned short Widget::getBorderWidth() const {
+    return borderWidth;
+}
+
+/**
+ * Check whether this Widget has its borderwidth set to any value greater zero.
+ *
+ * @return Whether this Widget draws a border
+ */
+bool Widget::hasBorder() const {
+    return borderWidth > 0;
+}
+
+/**
+ * Draws the Widget, and all its children. The widget itself is drawn first, its children after that.
+ */
 void Widget::draw() const {
     SDL_Renderer* renderer = getRenderer();
     if(parent == NULL) {
@@ -171,11 +272,11 @@ void Widget::draw() const {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
     SDL_Rect rect = createRect(pos, dim);
     SDL_RenderFillRect(renderer, &rect);
+    drawBorder();
 
     for(auto iter : children)
         iter.second->draw();
 
-    drawBorder();
     if(parent == NULL)
         SDL_RenderPresent(renderer);
 }
@@ -197,6 +298,29 @@ void Widget::drawBorder() const {
     }
 }
 
+/**
+ * Get the parent of this Widget.
+ *
+ * @return The parent of this Widget
+ */
+Widget* Widget::getParent() {
+    return parent;
+}
+
+/**
+ * Get the underlying SDL_Renderer. Used by this and its child Widgets to draw their content to.
+ *
+ * @return The underlying SDL_Renderer
+ */
+SDL_Renderer* Widget::getRenderer() const {
+    return parent->getRenderer();
+}
+
+/**
+ * Checks whether this Widget fits into the given other Widget, if not, resizes itself to fit.
+ *
+ * @param other The Widget to fit this into
+ */
 void Widget::fit(const Widget* other) {
     
     printf("Widget %li: Fitting to parent...\n", id);
@@ -211,14 +335,21 @@ void Widget::fit(const Widget* other) {
 
 }
 
+/**
+ * Creates a SDL_Rect from the given posistion and dimension Vectors.
+ *
+ * @param pos The position to create the rect at
+ * @param dim The dimension of the rect to create
+ * @return The SDL_Rect for the given values
+ */
 SDL_Rect SdlUi::createRect(const Vector& pos, const Vector& dim) {
     return {(int)round(pos.x), (int)round(pos.y), (int)round(dim.x), (int)round(dim.y)};
 }
 
+/**
+ * On destruction removes all children, and depending on the freeChildren parameter given in the constructor, also frees them.
+ */
 Widget::~Widget() {
-    if(freeChildren)
-        for(auto iter : children)
-            delete[] iter.second;
-
-    children.clear(); 
+    for(auto iter : children)
+        this->delChild(iter.second);
 }

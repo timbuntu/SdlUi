@@ -3,6 +3,8 @@
 
 #include "Vector.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_mouse.h>
 #include <map>
 
 namespace SdlUi {
@@ -24,6 +26,11 @@ namespace SdlUi {
     const Vector DIM_FILL   = Vector(FILL, FILL);
 
     SDL_Rect createRect(const Vector& pos, const Vector& dim);
+
+    /**
+     * Callback Funtion for events
+     */
+    typedef void (*EventListener)(const SDL_Event*);
 
     /**
      * The base Widget class contains common functions for all Widgets,
@@ -53,6 +60,9 @@ namespace SdlUi {
             bool hasChild(const Widget* widget) const;
             Widget* getParent();
 
+            void addListener(const uint32_t, const EventListener);
+            void handleEvent(const SDL_Event*);
+
             virtual bool isValid() const;
             bool freesChildren() const;
             virtual void draw() const;
@@ -62,6 +72,8 @@ namespace SdlUi {
             virtual SDL_Renderer* getRenderer() const;
             
             void fit(const Widget* other);
+            bool containsPoint(float x, float y) const;
+            bool containsPoint(Vector p) const;
             void delChild(Widget* widget, bool free);
 
             virtual void drawBorder() const;
@@ -76,6 +88,10 @@ namespace SdlUi {
             bool valid = true;
             bool freeChildren;
             std::map<unsigned long, Widget*> children;
+            /**
+             * Maps EventListeners to SDL_Event types
+             */
+            std::map<uint32_t, EventListener> listeners;
     };
 
 }

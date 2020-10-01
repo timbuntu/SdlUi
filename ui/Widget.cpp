@@ -208,13 +208,58 @@ void Widget::delChild(Widget* widget, bool free) {
 }
 
 /**
- * Checks whether the given Widget is a child if this Widget.
+ * Checks whether the given Widget is a child of this Widget.
  *
  * @param widget
  * @return Whether the given Widget is a child of this Widget
  */
 bool Widget::hasChild(const Widget* widget) const {
     return children.find(widget->id) != children.end();
+}
+
+/**
+ * Adds the listener for the given SDL_Event type
+ *
+ * @param type The SDL_Event type to add the listener for
+ * @param listener The EventListener to add
+ */
+void Widget::addListener(const uint32_t type, const EventListener listener) {
+    listeners.insert(std::make_pair(type, listener));
+}
+
+/**
+ * Calls the corresponding EventListener for the SDL_Event, if there is any
+ *
+ * @param event The SDL_Event that occured
+ */
+void Widget::handleEvent(const SDL_Event* event) {
+    //Special case for mouse events
+    //They are only considered if inside the widgets bounds
+    bool ignoreEvent = false;
+
+    switch(event->type) {
+        case SDL_MOUSEMOTION:
+            ignoreEvent = !this->containsPoint(event->motion.x, event->motion.y);
+            break;
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONDOWN:
+            ignoreEvent = !this->containsPoint(event->button.x, event->button.y);
+            break;
+        case SDL_MOUSEWHEEL:
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            ignoreEvent = !this->containsPoint(x, y);
+            break;
+    }
+    if(ignoreEvent)
+        return;
+        
+    auto listener = listeners.find(event->type);
+    if(listener != listeners.end())
+        listener->second(event);
+
+    for(auto child : children)
+        child.second->handleEvent(event);
 }
 
 /**
@@ -337,7 +382,25 @@ void Widget::fit(const Widget* other) {
         printf("Widget %li: Don't need to resize\n", id);
 
 }
+            
+/**
+ * Checks whether a given point is inside the Widgets bounds
+ *
+ * @param p The point to check
+ */
+bool Widget::containsPoint(Vector p) const {
+    return containsPoint(p.x, p.y);
+}
 
+/**
+ * Checks whether a given point is inside the Widgets bounds
+ *
+ * @param x The x coordinate of the point
+ * @param y The y coordinate of the point
+ */
+bool Widget::containsPoint(float x, float y) const {
+    return (this->pos.x <= x && this->pos.x + this->dim.x >= x) && (this->pos.y <= y && this->pos.y + this->dim.y >= y);
+}
 /**
  * Creates a SDL_Rect from the given posistion and dimension Vectors.
  *

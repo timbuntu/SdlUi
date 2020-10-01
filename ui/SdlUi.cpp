@@ -60,6 +60,8 @@ void SdlUi::Loop(Widget* mainWidget) {
                 case SDL_WINDOWEVENT:
                     handleWindowEvent(&event.window, mainWidget);
                     break;
+                default:
+                    mainWidget->handleEvent(&event);
             }
         }
 

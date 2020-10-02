@@ -2,14 +2,16 @@
 
 using namespace SdlUi;
 
-void addConstructorTests(void);
-void addChildTests      (void);
-void addResizeTests     (void);
+void addConstructorTests  (void);
+void addChildTests        (void);
+void addResizeTests       (void);
+void addEventListenerTests(void);
 
 int main(int argc, const char** argv) {
     addConstructorTests();   
     addChildTests();
     addResizeTests();
+    addEventListenerTests();
     runTests();
 }
 
@@ -130,5 +132,40 @@ void addResizeTests(void) {
         assert(child4.getDim() == childSize);
     });
 
+}
+
+Widget* widgetCalled = nullptr;
+Widget* widgetCalledOld = nullptr;
+
+void listener (Widget* callee, const SDL_Event* event) {
+    widgetCalledOld = widgetCalled;
+    widgetCalled = callee;
+};
+
+void addEventListenerTests(void) {
+    TEST_ADD("EventListeners", [](void) {
+        Widget parent(nullptr, Vector(0  , 0  ), Vector(600, 400));
+        Widget left  (&parent, Vector(0  , 0  ), Vector(300, 400));
+        Widget right (&parent, Vector(300, 0  ), Vector(300, 400));
+        Widget center(&parent, Vector(200, 150), Vector(200, 100));
+        
+        center.addListener(SDL_MOUSEBUTTONDOWN, listener);
+        SDL_Event event;
+        event.type = SDL_MOUSEBUTTONDOWN;
+        event.button.x = 0;
+        event.button.y = 0;
+        parent.handleEvent(&event);
+        assert(widgetCalled == nullptr);
+
+        event.button.x = 300;
+        event.button.y = 200;
+        parent.handleEvent(&event);
+        assert(widgetCalled == &center);
+
+        parent.addListener(SDL_MOUSEBUTTONDOWN, listener);
+        parent.handleEvent(&event);
+        assert(widgetCalled == &center && widgetCalledOld == &parent);
+
+    });
 }
 

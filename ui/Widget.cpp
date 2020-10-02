@@ -247,7 +247,7 @@ void Widget::handleEvent(const SDL_Event* event) {
         
     auto listener = listeners.find(event->type);
     if(listener != listeners.end())
-        listener->second(event);
+        listener->second(this, event);
 
     for(auto child : children)
         child.second->handleEvent(event);

@@ -8,6 +8,9 @@
 #include <map>
 
 namespace SdlUi {
+
+    class Widget;
+
     /**
      * Used for centering on individual axis
      */
@@ -30,7 +33,7 @@ namespace SdlUi {
     /**
      * Callback Funtion for events
      */
-    typedef void (*EventListener)(const SDL_Event*);
+    typedef void (*EventListener)(Widget* callee, const SDL_Event*);
 
     /**
      * The base Widget class contains common functions for all Widgets,

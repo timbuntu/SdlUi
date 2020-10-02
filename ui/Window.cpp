@@ -30,7 +30,7 @@ Window::Window(const char* title, const Vector& dim, const Vector& pos, bool fre
 }
 
 /**
- * Handles specific Window events like SDL_WINDOWEVENT, and passes other events down to its Widgets
+ * Handles specific Window events like SDL_WINDOWEVENT, and then passes events down to its Widgets
  *
  * @param event The SDL_Event to handle
  */
@@ -41,8 +41,8 @@ void Window::handleEvent(const SDL_Event* event) {
                 this->resize(event->window.data1, event->window.data2);
                 break;
         }
-    } else
-        Widget::handleEvent(event);
+    } 
+    Widget::handleEvent(event);
 }
 
 Window::~Window() {

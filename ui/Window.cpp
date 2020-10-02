@@ -39,7 +39,6 @@ void Window::handleEvent(const SDL_Event* event) {
         switch(event->window.event) {
             case SDL_WINDOWEVENT_SIZE_CHANGED:
                 this->resize(event->window.data1, event->window.data2);
-                puts("Got window size changed event");
                 break;
         }
     } else

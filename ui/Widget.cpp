@@ -69,21 +69,17 @@ Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, 
  * @param factorY The factor with whitch to scale on y axis
  */
 void Widget::scale(const float factorX, const float factorY) {
-    printf("Widget %li: Scaling by factors %f, %f\n", this->id, factorX, factorY);
     for(auto child : children)
         child.second->scale(factorX, factorY);
 
     if(factorX != 1 && factorX != INFINITY) {
-        printf("Widget %li: Scaling x\n", this->id);
         this->dim.x = this->dim.x * factorX;
         this->pos.x = this->pos.x * factorX;
     }
     if(factorY != 1 && factorY != INFINITY) {
-        printf("Widget %li: Scaling y\n", this->id);
         this->dim.y = this->dim.y * factorY;
         this->pos.y = this->pos.y * factorY;
     }
-    printf("Widget %li: Resized to %f, %f\n", this->id, this->dim.x, this->dim.y);
 }
 
 /**
@@ -109,8 +105,6 @@ void Widget::addChild(Widget* widget) {
     //TODO More elaborate calculation of minimalDim for multiple children
     if(widget->minimalDim < this->minimalDim)
         this->minimalDim = widget->minimalDim;
-
-    printf("Widget %li: Added widget %li\n", id, widget->id);
 }
 
 /**
@@ -371,16 +365,13 @@ SDL_Renderer* Widget::getRenderer() const {
  */
 void Widget::fit(const Widget* other) {
     
-    printf("Widget %li: Fitting to parent...\n", id);
     Vector spaceReq(this->pos + this->dim);
     if(spaceReq.x > other->dim.x || spaceReq.y > other->dim.y) {
         this->resize(
                 (this->pos.x + this->dim.x) <= other->dim.x ? this->dim.x : (other->dim.x - this->pos.x),
                 (this->pos.y + this->dim.y) <= other->dim.y ? this->dim.y : (other->dim.y - this->pos.y)
         );
-    } else
-        printf("Widget %li: Don't need to resize\n", id);
-
+    }
 }
             
 /**

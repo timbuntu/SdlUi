@@ -18,11 +18,12 @@ namespace SdlUi {
                 bool freeChildren = false
             );
 
-            virtual bool isValid() const { return window && renderer; }
+            virtual void handleEvent(const SDL_Event*) override;
+            virtual bool isValid() const override { return window && renderer; }
             virtual ~Window();
 
         protected:
-            virtual SDL_Renderer* getRenderer() const { return renderer; }
+            virtual SDL_Renderer* getRenderer() const override { return renderer; }
 
         private:
             const char*   title;

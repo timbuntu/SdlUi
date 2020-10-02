@@ -35,17 +35,6 @@ bool SdlUi::Init() {
     return success;
 }
 
-namespace SdlUi {
-static void handleWindowEvent(SDL_WindowEvent* event, Widget* mainWidget) {
-    switch(event->event) {
-        case SDL_WINDOWEVENT_SIZE_CHANGED:
-            mainWidget->resize(event->data1, event->data2);
-            puts("Got window size changed event");
-            break;
-    }
-}
-}
-
 void SdlUi::Loop(Widget* mainWidget) {
     bool quit = false;
     SDL_Event event;
@@ -56,10 +45,6 @@ void SdlUi::Loop(Widget* mainWidget) {
             switch(event.type) {
                 case SDL_QUIT:
                     quit = true;
-                    break;
-                case SDL_WINDOWEVENT:
-                    handleWindowEvent(&event.window, mainWidget);
-                    break;
                 default:
                     mainWidget->handleEvent(&event);
             }

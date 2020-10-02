@@ -61,7 +61,7 @@ namespace SdlUi {
             Widget* getParent();
 
             void addListener(const uint32_t, const EventListener);
-            void handleEvent(const SDL_Event*);
+            virtual void handleEvent(const SDL_Event*);
 
             virtual bool isValid() const;
             bool freesChildren() const;

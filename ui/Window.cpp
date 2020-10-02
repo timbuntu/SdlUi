@@ -3,6 +3,15 @@
 using namespace SdlUi;
 
 
+/**
+ * Creates a new Window with the given title, dimensions, and position, which optionally frees its childrens
+ * Memory on removal.
+ *
+ * @param title The window title to set
+ * @param dim The dimensions of the window
+ * @param pos The position of the window
+ * @freeChildren Whether children should be deallocated on removal
+ */
 Window::Window(const char* title, const Vector& dim, const Vector& pos, bool freeChildren)
 : Widget(NULL, pos, dim, 0, freeChildren) 
 { 
@@ -18,6 +27,23 @@ Window::Window(const char* title, const Vector& dim, const Vector& pos, bool fre
         this->renderer = NULL;
     }
 
+}
+
+/**
+ * Handles specific Window events like SDL_WINDOWEVENT, and passes other events down to its Widgets
+ *
+ * @param event The SDL_Event to handle
+ */
+void Window::handleEvent(const SDL_Event* event) {
+    if(event->type == SDL_WINDOWEVENT) {
+        switch(event->window.event) {
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                this->resize(event->window.data1, event->window.data2);
+                puts("Got window size changed event");
+                break;
+        }
+    } else
+        Widget::handleEvent(event);
 }
 
 Window::~Window() {

@@ -38,9 +38,9 @@ namespace SdlUi {
      */
     class Widget {
         public:
-            Widget(Widget* parent, bool freeChildren = false);
-            Widget(Widget* parent, const Vector& pos, unsigned short borderWidth = 0, bool freeChildren = false);
-            Widget(Widget* parent, const Vector& pos, const Vector& dimension, unsigned short borderWidth = 0, bool freeChildren = false);
+            Widget(Widget* parent);
+            Widget(Widget* parent, const Vector& pos, unsigned short borderWidth = 0);
+            Widget(Widget* parent, const Vector& pos, const Vector& dimension, unsigned short borderWidth = 0);
 
             Vector getPos() const;
             Vector getDim() const;
@@ -64,6 +64,7 @@ namespace SdlUi {
             virtual void handleEvent(const SDL_Event*);
 
             virtual bool isValid() const;
+            void freeChildren(bool free);
             bool freesChildren() const;
             virtual void draw() const;
 
@@ -86,7 +87,7 @@ namespace SdlUi {
             Vector pos, dim, minimalDim;
             unsigned short borderWidth;
             bool valid = true;
-            bool freeChildren;
+            bool bFreeChildren;
             std::map<unsigned long, Widget*> children;
             /**
              * Maps EventListeners to SDL_Event types

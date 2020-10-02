@@ -10,10 +10,9 @@ using namespace SdlUi;
  * @param title The window title to set
  * @param dim The dimensions of the window
  * @param pos The position of the window
- * @freeChildren Whether children should be deallocated on removal
  */
-Window::Window(const char* title, const Vector& dim, const Vector& pos, bool freeChildren)
-: Widget(NULL, pos, dim, 0, freeChildren) 
+Window::Window(const char* title, const Vector& dim, const Vector& pos)
+: Widget(NULL, pos, dim, 0) 
 { 
     this->title = strdup(title);
     this->window = SDL_CreateWindow(title, pos.x, pos.y, dim.x, dim.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);

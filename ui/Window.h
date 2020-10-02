@@ -14,8 +14,7 @@ namespace SdlUi {
             Window(
                 const char* title,
                 const Vector& dim = Vector(SDLUI_WIN_DEFAULT_WIDTH, SDLUI_WIN_DEFAULT_HEIGHT),
-                const Vector& pos = Vector(0,0),
-                bool freeChildren = false
+                const Vector& pos = Vector(0,0)
             );
 
             virtual void handleEvent(const SDL_Event*) override;

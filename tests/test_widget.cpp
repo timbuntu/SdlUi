@@ -35,7 +35,8 @@ void addConstructorTests(void) {
         assert(widgetDefault.isValid()        == true         );
         assert(widgetDefault.getBorderWidth() == 0            );
 
-        Widget widgetCustom(nullptr, Vector(0, 200), 4, true);
+        Widget widgetCustom(nullptr, Vector(0, 200), 4);
+        widgetCustom.freeChildren(true);
         
         assert(widgetCustom.getPos()         == Vector(0,200));
         assert(widgetCustom.getDim()         == Vector(0,0)  );
@@ -55,7 +56,8 @@ void addConstructorTests(void) {
         assert(widgetDefault.isValid()        == true           );
         assert(widgetDefault.getBorderWidth() == 0              );
 
-        Widget widgetCustom(nullptr, Vector(200, 200), Vector(640, 480), 4, true);
+        Widget widgetCustom(nullptr, Vector(200, 200), Vector(640, 480), 4);
+        widgetCustom.freeChildren(true);
         
         assert(widgetCustom.getPos()         == Vector(200,200));
         assert(widgetCustom.getDim()         == Vector(640,480));

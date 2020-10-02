@@ -9,10 +9,9 @@ unsigned long Widget::idCounter = 0;
  * Optionally can be passed a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
  *
  * @param parent Parent of the new Widget, null pointer if there is none
- * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
  */
-Widget::Widget(Widget* parent, bool freeChildren)
-: Widget(parent, Vector(0, 0), 0, freeChildren)
+Widget::Widget(Widget* parent)
+: Widget(parent, Vector(0, 0), 0)
 {
 
 }
@@ -24,10 +23,9 @@ Widget::Widget(Widget* parent, bool freeChildren)
  * @param parent Parent of the new Widget, null pointer if there is none
  * @param pos The position of the Widget
  * @param borderWidth The width of the border to draw around the widget
- * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
  */
-Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bool freeChildren)
-: parent(parent), pos(pos), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
+Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth)
+: parent(parent), pos(pos), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), bFreeChildren(false)
 {
     if(parent)
         this->dim = parent->dim;
@@ -44,10 +42,9 @@ Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth, bo
  * @param position The position of the Widget
  * @param dimension The dimension of the Widget
  * @param borderWidth The width of the border to draw around the widget
- * @param freeChildren Wether the widget should free the memory of its children when they are removed, or the widget itself is destroyed
  */
-Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, unsigned short borderWidth, bool freeChildren)
-: parent(parent), dim(dimension), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), freeChildren(freeChildren)
+Widget::Widget(Widget* parent, const Vector& position, const Vector& dimension, unsigned short borderWidth)
+: parent(parent), dim(dimension), borderWidth(borderWidth), minimalDim(2*borderWidth, 2*borderWidth), id(idCounter++), bFreeChildren(false)
 {
     if(parent) {
         this->setPos(position);
@@ -174,12 +171,12 @@ void Widget::resize(const Vector& dim) {
 }
 
 /**
- * Removes the given Widget as child if it is one. If the freeChilds option was set in Constructor, also frees the child.
+ * Removes the given Widget as child if it is one. If the bFreeChildren option was set in Constructor, also frees the child.
  *
  * @param widget The widget to remove as child
  */
 void Widget::delChild(Widget* widget) {
-    this->delChild(widget, this->freeChildren);
+    this->delChild(widget, this->bFreeChildren);
 }
 
 /**
@@ -266,12 +263,21 @@ bool Widget::isValid() const {
 }
 
 /**
+ * Set whether this Widget should free its children on removal, or not.
+ *
+ * @param free Whether to free children
+ */
+void Widget::freeChildren(bool free) {
+    this->bFreeChildren = free;
+}
+
+/**
  * Check whether this Widget frees its children on removal, or its destruction.
  *
  * @return Whether this Widget frees its children.
  */
 bool Widget::freesChildren() const {
-    return freeChildren;
+    return bFreeChildren;
 }
 
 /**
@@ -404,7 +410,7 @@ SDL_Rect SdlUi::createRect(const Vector& pos, const Vector& dim) {
 }
 
 /**
- * On destruction removes all children, and depending on the freeChildren parameter given in the constructor, also frees them.
+ * On destruction removes all children, and depending on the bFreeChildren parameter given in the constructor, also frees them.
  */
 Widget::~Widget() {
     for(auto iter = children.begin(); iter != children.end(); ) {

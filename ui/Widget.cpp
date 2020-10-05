@@ -168,7 +168,7 @@ void Widget::resize(const Vector& dim) {
 }
 
 /**
- * Removes the given Widget as child if it is one. If the bFreeChildren option was set in Constructor, also frees the child.
+ * Removes the given Widget as child if it is one. If the bFreeChildren option was set, also frees the child.
  *
  * @param widget The widget to remove as child
  */
@@ -177,7 +177,7 @@ void Widget::delChild(Widget* widget) {
 }
 
 /**
- * Removes the given Widget as it child if it is one. If the free parameter is set to true, also frees the child.
+ * Removes the given Widget as it child if it is one. If the bFreeChildren parameter is set to true, also frees the child.
  *
  * @param widget The widget to remove as child
  * @param free Whether to free the child after removal
@@ -407,7 +407,7 @@ SDL_Rect SdlUi::createRect(const Vector& pos, const Vector& dim) {
 }
 
 /**
- * On destruction removes all children, and depending on the bFreeChildren parameter given in the constructor, also frees them.
+ * On destruction removes all children, and depending on the bFreeChildren parameter, also frees them.
  */
 Widget::~Widget() {
     for(auto iter = children.begin(); iter != children.end(); ) {

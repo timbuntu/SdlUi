@@ -6,7 +6,6 @@ unsigned long Widget::idCounter = 0;
 
 /**
  * Create Widget with given parent, or none if passed a null pointer.
- * Optionally can be passed a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
  *
  * @param parent Parent of the new Widget, null pointer if there is none
  */
@@ -18,7 +17,6 @@ Widget::Widget(Widget* parent)
 
 /**
  * Create Widget at the given position with given parent, or none if passed a null pointer.
- * Optionally can be passed a borderwidth, and a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
  *
  * @param parent Parent of the new Widget, null pointer if there is none
  * @param pos The position of the Widget
@@ -36,7 +34,6 @@ Widget::Widget(Widget* parent, const Vector& pos, unsigned short borderWidth)
 /**
  * Create Widget at the given position with the given dimension, and the given parent, or none if passed a null pointer.
  * If the dimension is too big to fit into the parent, it is shrinked to the maximal fitting size.
- * Optionally can be passed a borderwidth, and a bool to determine whether the Widget should free its children. Default behaviour is to not free them.
  *
  * @param parent Parent of the new Widget, null pointer if there is none
  * @param position The position of the Widget
